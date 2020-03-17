@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+<style>
+   .word { 
+    width: 160px; 
+    background: #f0f0f0;
+    border: 1px solid #333;
+    padding: 10px;
+    font-size: 18px;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+   }
+  </style>
+
+{% block title %}{{article.article_title}}{% endblock %}
+
+
+{% block content %}
+
+<h2>{{article.article_title}}</h2>	
+<p>{{article.article_text}}</p>
+<em>{{article.pub_date}}</em>
+
+<hr>
+{% if lates_comments_list %}
+	<p>
+		<strong><i>Комментарии:</i></strong>
+	</p>
+	{% for c in lates_comments_list %}
+	
+		<p>
+
+			<strong>{{c.author_name}}</strong>
+			<p class="word">{{c.comment_text}}</p>
+		</p>
+	{% endfor %}
+	
+{% else %}
+	Оставь комментарий первым!!!
+{% endif %}
+
+
+<hr>
+
+
+<form action="{% url 'articales:leave_comment' article.id %}" method="POST">
+	{% csrf_token %}
+
+	<input type="text" required placeholder="Ваше Имя" name="name"><br>
+	<textarea name="text" required="" placeholder="Текст комментария" cols="21" rows="5"></textarea><br>
+
+	<button type="submit">Оставить комментарий</button>
+</form>
+
+{% endblock %}
